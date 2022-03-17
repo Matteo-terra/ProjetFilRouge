@@ -118,7 +118,7 @@ public class HelloController implements Initializable {
         try {
              JAXBContext jc = JAXBContext.newInstance("com.filrouge.projet_filrouge.model");
             Unmarshaller unmarshaller = jc.createUnmarshaller();
-            File myfile = new File("C:\\Users\\boble\\Documents\\XML\\biblio.xml");
+            File myfile = new File("C:\\Users\\visho\\IdeaProjects\\demo\\Projet_FilRouge\\XML\\Biblio.xml");
             Bibliotheque bibliotheque2 = (Bibliotheque) unmarshaller.unmarshal(myfile);
             List livres = (List) bibliotheque2.getLivre();
             for (int i = 0; i < livres.size(); i++) {
@@ -132,35 +132,36 @@ public class HelloController implements Initializable {
                 Bibliotheque.Livre livre = (Bibliotheque.Livre) livres.get(i);
                 System.out.println("Livre ");
                 System.out.println("Titre   : " + livre.getTitre());
-                System.out.println("Auteur  : " + livre.getAuteur());
+                //System.out.println("Auteur  : " + livre.getAuteur());
                 System.out.println("Parution : " + livre.getParution());
                 System.out.println("Présentation : " + livre.getPresentation());
                 System.out.println("Colonne : " + livre.getColonne());
                 System.out.println("Rangée : " + livre.getRangee());
                 System.out.println();
 
-                bibliotheque.add(new Livre(livre.getTitre(), livre.getAuteur(),livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee()));
+                Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom() + "_/_"+ livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
 
+                tabBiblio.getItems().add(myLivre);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tabBiblio.setItems(getLi());
+        //tabBiblio.setItems(getLi());
     }
 
-        public ObservableList<Livre> getLi(){
+/*        public ObservableList<Livre> getLi(){
 
             bibliotheque.add(new Livre("test", "Yanis", "Oui", "2000", 5, 2));
             bibliotheque.add(new Livre("Jojo", "Vincent", "Okoko", "2010", 6, 7));
 
             return bibliotheque;
-        }
+        }*/
 
         public ObservableList<Livre> addLivre(){
             String titre1 = txtTitre.getText();
             String auteur1 = txtAuteur.getText();
             String pres1 = txtPres.getText();
-            String parution1 = txtParution.getText();
+            int parution1 = Integer.parseInt(txtParution.getText());
             int colonne1 = Integer.parseInt(txtColonne.getText());
             int rng1 = Integer.parseInt(txtRng.getText());
 

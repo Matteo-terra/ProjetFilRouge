@@ -5,30 +5,54 @@ public class Livre {
         int colonne;
         int rng ;
         String titre;
-        String parution;
+        int parution;
         String auteur;
+        String nom;
+        String prenom;
         String presentation;
 
 
-        public Livre(String titre, String auteur, String presentation , String parution , int colonne , int rng) {
+        public Livre(String titre, String auteur, String presentation , int parution , int colonne , int rng) {
                 this.colonne = colonne;
                 this.rng = rng;
                 this.titre = titre;
                 this.parution = parution;
                 this.auteur = auteur;
+                getInfoAuthor();
                 this.presentation = presentation;
+        }
+
+        private void getInfoAuthor() {
+                this.nom = this.auteur.split("_/_")[0];
+                this.prenom = this.auteur.split("_/_")[1];
         }
 
         public Livre(String titre, Bibliotheque.Livre.Auteur auteur, String presentation, int parution, short colonne, short rangee) {
         }
 
 
-        public String getParution() {
+        public int getParution() {
                 return parution;
         }
 
-        public void setParution(String parution) {
+        public void setParution(int parution) {
                 this.parution = parution;
+        }
+
+        public String getNom() {
+                return nom;
+        }
+
+        public void setNom(String nom) {
+                this.nom = nom;
+        }
+
+        public String getPrenom() {
+                return prenom;
+        }
+
+        public void setPrenom(String prenom) {
+                this.prenom = prenom;
         }
 
         public String getAuteur() {
