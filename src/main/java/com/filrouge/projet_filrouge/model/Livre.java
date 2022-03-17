@@ -11,21 +11,33 @@ public class Livre {
         String prenom;
         String presentation;
 
-
         public Livre(String titre, String auteur, String presentation , int parution , int colonne , int rng) {
                 this.colonne = colonne;
                 this.rng = rng;
                 this.titre = titre;
                 this.parution = parution;
                 this.auteur = auteur;
-                getInfoAuthor();
                 this.presentation = presentation;
         }
 
-        private void getInfoAuthor() {
+        public Livre(String titre, String nom, String prenom,String presentation , int parution , int colonne , int rng) {
+                this.colonne = colonne;
+                this.rng = rng;
+                this.titre = titre;
+                this.parution = parution;
+                this.auteur = getInfoAuthor(nom, prenom);
+                this.presentation = presentation;
+        }
+
+        private String getInfoAuthor(String nom, String prenom) {
+                String auteur = nom + " " +prenom;
+                return auteur;
+        }
+
+  /*      private String getInfoAuthor(String nom, String prenom) {
                 this.nom = this.auteur.split("_/_")[0];
                 this.prenom = this.auteur.split("_/_")[1];
-        }
+        }*/
 
         public Livre(String titre, Bibliotheque.Livre.Auteur auteur, String presentation, int parution, short colonne, short rangee) {
         }

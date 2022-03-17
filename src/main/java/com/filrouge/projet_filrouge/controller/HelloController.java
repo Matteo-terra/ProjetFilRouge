@@ -139,9 +139,15 @@ public class HelloController implements Initializable {
                 System.out.println("Rangée : " + livre.getRangee());
                 System.out.println();
 
-                Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom() + "_/_"+ livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
+                //Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom() + "_/_"+ livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
+                Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
+
+                //TEST
+                bibliotheque.add(new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee()));
+
 
                 tabBiblio.getItems().add(myLivre);
+
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,8 +171,17 @@ public class HelloController implements Initializable {
             int colonne1 = Integer.parseInt(txtColonne.getText());
             int rng1 = Integer.parseInt(txtRng.getText());
 
+            System.out.println(parution1);
+            System.out.println(colonne1);
+            System.out.println(rng1);
+
             bibliotheque.add(new Livre(titre1,auteur1,pres1,parution1,colonne1,rng1));
             return bibliotheque;
+
+            //Livre myFormBook =new Livre(titre1, auteur1, pres1, parution1, colonne1, rng1);
+            //tabBiblio.getItems().add(myFormBook);
+
+
     }}
 
 /*
