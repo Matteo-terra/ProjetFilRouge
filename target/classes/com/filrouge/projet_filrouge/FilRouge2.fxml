@@ -59,8 +59,8 @@
         </Menu>
         <Menu fx:id="menuEdition" mnemonicParsing="false" text="Edition">
           <items>
-            <MenuItem fx:id="itemSauve" mnemonicParsing="false" text="Sauvegarder" />
-            <MenuItem fx:id="itemSauveSous" mnemonicParsing="false" text="Sauvegarder sous..." />
+            <MenuItem fx:id="itemSauve" mnemonicParsing="false" onAction="#SaveXML" text="Sauvegarder" />
+            <MenuItem fx:id="itemSauveSous" mnemonicParsing="false" onAction="#SauvegarderSous" text="Sauvegarder sous..." />
           </items>
         </Menu>
         <Menu fx:id="menuAbout" mnemonicParsing="false" text="About">
@@ -88,8 +88,8 @@
                                     <TableColumn fx:id="colRng" prefWidth="111.0" text="Rangée" />
                                 </columns>
                               </TableView>
-                              <Button fx:id="btnPlus" layoutX="562.0" layoutY="488.0" mnemonicParsing="false" text="+" />
-                              <Button fx:id="btnMoins" layoutX="593.0" layoutY="488.0" mnemonicParsing="false" text="-" />
+                              <Button fx:id="btnModify" layoutX="482.0" layoutY="488.0" mnemonicParsing="false" onAction="#onClickModifier" prefHeight="26.0" prefWidth="69.0" text="Modifier" />
+                              <Button fx:id="btnMoins" layoutX="554.0" layoutY="488.0" mnemonicParsing="false" onAction="#handleDelete" text="Supprimer" />
                     </children>
                   </AnchorPane>
                 </content>

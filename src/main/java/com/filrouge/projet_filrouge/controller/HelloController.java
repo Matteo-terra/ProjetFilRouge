@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class HelloController implements Initializable {
     @FXML
     private Button btnMoins;
     @FXML
-    private Button btnPlus;
+    private Button btnModify;
     @FXML
     private Button btnValider;
     @FXML
@@ -83,6 +85,7 @@ public class HelloController implements Initializable {
     private TextField txtRng;
     @FXML
     private TextField txtTitre;
+    private JAXBContext context;
 
     @FXML
     protected void onClick() {
@@ -91,6 +94,29 @@ public class HelloController implements Initializable {
     @FXML
     void onClickValider(ActionEvent event) {
         tabBiblio.setItems(addLivre());
+        txtColonne.clear();
+        txtParution.clear();
+        txtPres.clear();
+        txtRng.clear();
+        txtTitre.clear();
+        txtAuteur.clear();
+
+    }
+
+    @FXML
+    void onClickModifier(ActionEvent event) {
+
+        modifierLivre();
+
+        txtColonne.clear();
+        txtParution.clear();
+        txtPres.clear();
+        txtRng.clear();
+        txtTitre.clear();
+        txtAuteur.clear();
+
+        tabBiblio.refresh();
+
     }
 
     @FXML
@@ -113,6 +139,9 @@ public class HelloController implements Initializable {
         colColonne.setCellValueFactory(new PropertyValueFactory<Livre, Integer>("colonne"));
         colRng.setCellValueFactory(new PropertyValueFactory<Livre, Integer>("rng"));
         colParution.setCellValueFactory(new PropertyValueFactory<Livre, Integer>("parution"));
+        this.tabBiblio.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            this.showLivreDetails(newValue);
+        });
 
 
         try {
@@ -154,8 +183,8 @@ public class HelloController implements Initializable {
         }
         //tabBiblio.setItems(getLi());
     }
-
-/*        public ObservableList<Livre> getLi(){
+        //TEST AJOUT EN DUR
+        /*  public ObservableList<Livre> getLi(){
 
             bibliotheque.add(new Livre("test", "Yanis", "Oui", "2000", 5, 2));
             bibliotheque.add(new Livre("Jojo", "Vincent", "Okoko", "2010", 6, 7));
@@ -171,48 +200,135 @@ public class HelloController implements Initializable {
             int colonne1 = Integer.parseInt(txtColonne.getText());
             int rng1 = Integer.parseInt(txtRng.getText());
 
-            System.out.println(parution1);
-            System.out.println(colonne1);
-            System.out.println(rng1);
-
             bibliotheque.add(new Livre(titre1,auteur1,pres1,parution1,colonne1,rng1));
             return bibliotheque;
 
-            //Livre myFormBook =new Livre(titre1, auteur1, pres1, parution1, colonne1, rng1);
-            //tabBiblio.getItems().add(myFormBook);
+    }
+
+    @FXML
+    void handleDelete(ActionEvent event) {
+        int selectedIndex = this.tabBiblio.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0) {
+            this.tabBiblio.getItems().remove(selectedIndex);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Aucune sélection");
+            alert.setHeaderText("Aucun livre sélectionné");
+            alert.setContentText("Merci de choisir un livre dans le tableau.");
+            alert.showAndWait();
+        }
+
+    }
 
 
-    }}
+    public void initJAXB() throws JAXBException {
+        this.context = JAXBContext.newInstance(new Class[]{Livre.class});
+    }
 
-/*
-            Fonction creerLivre()
-@FXML
-    protected Livre creerLivre (ActionEvent e){
+    /* handleModif test ou l'on supprime le film selectionné en ajoutant le film modifié
+    @FXML
+    void handleModif(ActionEvent event) {
+        Livre selectedLivre = (Livre)this.tabBiblio.getSelectionModel().getSelectedItem();
+        int selectedIndex = this.tabBiblio.getSelectionModel().getSelectedIndex();
+        if (selectedLivre != null) {
+            this.tabBiblio.getItems().remove(selectedIndex);
+            bibliotheque.remove(selectedIndex);
+            this.txtTitre.setText(selectedLivre.getTitre());
+            this.txtAuteur.setText(selectedLivre.getAuteur());
+            this.txtPres.setText(selectedLivre.getPresentation());
+            int parution = selectedLivre.getParution();
+            this.txtParution.setText(String.valueOf(parution));
+            int colonne = selectedLivre.getColonne();
+            this.txtColonne.setText(String.valueOf(colonne));
+            int rangee = selectedLivre.getRng();
+            this.txtRng.setText(String.valueOf(rangee));
+        }
 
-        String titre = txtTitre.getText();
-        String auteur = txtAuteur.getText();
-        String pres = txtPres.getText();
-        int parution = txtParution.getValue();
-        int colonne = txtColonne.getValue();
-        int rang = txtRng.getValue();
-
-        System.out.println(txtTitre.getText());
-        System.out.println(txtAuteur.getText());
-        System.out.println(txtPres.getText());
-        System.out.println(txtParution.getValue());
-        System.out.println(txtColonne.getValue());
-        System.out.println(txtRng.getValue());
-
-        Livre livre = new Livre(titre, auteur, pres, parution, colonne, rang);
-
-        System.out.println(livre.getTitre());
-        System.out.println(livre.getAuteur());
-        System.out.println(livre.getPresentation());
-        System.out.println(livre.getParution());
-        System.out.println(livre.getColonne());
-        System.out.println(livre.getRng());
-
-        return livre;
     }*/
 
+    @FXML
+    public ObservableList<Livre> modifierLivre() {
+        Livre selectedLivre = (Livre)this.tabBiblio.getSelectionModel().getSelectedItem();
+        int selectedIndex = this.tabBiblio.getSelectionModel().getSelectedIndex();
+        if (selectedLivre != null) {
+            for (int i=0; i< bibliotheque.size(); i++){
+                if ( selectedLivre.getTitre().equals(bibliotheque.get(i).getTitre()) && selectedLivre.getRng() == bibliotheque.get(i).getRng()){
+
+                    System.out.println("Titre du livre selectionné:" + selectedLivre.getTitre());
+                    System.out.println("Titre du livre de la biblio:" + bibliotheque.get(i).getTitre());
+
+                    bibliotheque.get(i).setTitre(txtTitre.getText());
+                    bibliotheque.get(i).setAuteur(txtAuteur.getText());
+                    bibliotheque.get(i).setPresentation(txtPres.getText());
+                    bibliotheque.get(i).setParution(Integer.parseInt(txtParution.getText()));
+                    bibliotheque.get(i).setColonne(Integer.parseInt(txtColonne.getText()));
+                    bibliotheque.get(i).setRng(Integer.parseInt(txtRng.getText()));
+
+                    System.out.println("Titre du livre de la biblio modifié:" + bibliotheque.get(i).getTitre());
+                }
+            }
+
+
+
+        }
+        return bibliotheque;
+
+    }
+
+    @FXML
+    void SaveXML(ActionEvent event) throws JAXBException {
+        this.initJAXB();
+        Marshaller marshaller = this.context.createMarshaller();
+        marshaller.marshal(new Livre((String)null, (String)null, (String)null, Integer.parseInt((String)null), 0, 0), new File("livres.xml"));
+    }
+
+    @FXML
+    void SauvegarderSous(ActionEvent event) {
+    }
+
+    private void showLivreDetails(Livre livre) {
+        if (livre != null) {
+            this.txtTitre.setText(livre.getTitre());
+            this.txtAuteur.setText(livre.getAuteur());
+            this.txtPres.setText(livre.getPresentation());
+            this.txtParution.setText(String.valueOf(livre.getParution()));
+            this.txtColonne.setText(String.valueOf(livre.getColonne()));
+            this.txtRng.setText(String.valueOf(livre.getRng()));
+        } else {
+            this.txtTitre.clear();
+            this.txtAuteur.clear();
+            this.txtPres.clear();
+            this.txtParution.clear();
+            this.txtColonne.clear();
+            this.txtRng.clear();
+        }
+
+    }
+
+}
+
+
+
+ /*
+    @FXML
+    void Explorer(ActionEvent event) throws IOException, JAXBException {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("xml files (*.xml)", new String[]{"xml"});
+        chooser.setDialogTitle("Open schedule file");
+        chooser.setFileFilter(xmlfilter);
+        int value = chooser.showOpenDialog((Component)null);
+        if (value == 0) {
+            File target = chooser.getSelectedFile();
+
+            try {
+                this.jaxbContext = JAXBContext.newInstance(new Class[]{Livre.class});
+                Unmarshaller jaxbUnmarshaller = this.jaxbContext.createUnmarshaller();
+                Livre livre = (Livre)jaxbUnmarshaller.unmarshal(target);
+                System.out.println(livre);
+            } catch (JAXBException var8) {
+                var8.printStackTrace();
+            }
+        }
+
+    }*/
 
