@@ -7,19 +7,23 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.xml.bind.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-
 
 
 public class HelloController implements Initializable {
@@ -87,6 +91,10 @@ public class HelloController implements Initializable {
     private TextField txtTitre;
     private JAXBContext context;
 
+    private static final String FICHIER_XML = "C:\\Users\\visho\\IdeaProjects\\demo\\ProjetFilRougeGit\\livres.xml";
+
+    private File myfile = new File(FICHIER_XML);
+
     @FXML
     protected void onClick() {
     }
@@ -119,13 +127,17 @@ public class HelloController implements Initializable {
 
     }
 
+/*
     @FXML
     void Explorer(ActionEvent event) throws IOException {
         Process p = new ProcessBuilder("Explorer.exe", "/select,C:\\directory\\selectedFile").start();
     }
+*/
 
     @FXML
-    void QuitterApp(){System.exit(0);}
+    void QuitterApp() {
+        System.exit(0);
+    }
 
     @FXML
     public ObservableList<Livre> bibliotheque = FXCollections.observableArrayList();
@@ -145,7 +157,7 @@ public class HelloController implements Initializable {
 
 
         try {
-             JAXBContext jc = JAXBContext.newInstance("com.filrouge.projet_filrouge.model");
+            JAXBContext jc = JAXBContext.newInstance("com.filrouge.projet_filrouge.model");
             Unmarshaller unmarshaller = jc.createUnmarshaller();
             File myfile = new File("C:\\Users\\visho\\IdeaProjects\\demo\\Projet_FilRouge\\XML\\Biblio.xml");
             Bibliotheque bibliotheque2 = (Bibliotheque) unmarshaller.unmarshal(myfile);
@@ -153,8 +165,7 @@ public class HelloController implements Initializable {
             for (int i = 0; i < livres.size(); i++) {
                 if (livres.get(i) instanceof Bibliotheque.Livre) {
                     System.out.println("C'est vrai");
-                }
-                else {
+                } else {
                     System.out.println("C'est faux");
                     System.out.println(livres.get(i).getClass().toString());
                 }
@@ -169,10 +180,10 @@ public class HelloController implements Initializable {
                 System.out.println();
 
                 //Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom() + "_/_"+ livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
-                Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
+                Livre myLivre = new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation(), livre.getParution(), livre.getColonne(), livre.getRangee());
 
                 //TEST
-                bibliotheque.add(new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee()));
+                bibliotheque.add(new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation(), livre.getParution(), livre.getColonne(), livre.getRangee()));
 
 
                 tabBiblio.getItems().add(myLivre);
@@ -183,7 +194,7 @@ public class HelloController implements Initializable {
         }
         //tabBiblio.setItems(getLi());
     }
-        //TEST AJOUT EN DUR
+    //TEST AJOUT EN DUR
         /*  public ObservableList<Livre> getLi(){
 
             bibliotheque.add(new Livre("test", "Yanis", "Oui", "2000", 5, 2));
@@ -192,16 +203,16 @@ public class HelloController implements Initializable {
             return bibliotheque;
         }*/
 
-        public ObservableList<Livre> addLivre(){
-            String titre1 = txtTitre.getText();
-            String auteur1 = txtAuteur.getText();
-            String pres1 = txtPres.getText();
-            int parution1 = Integer.parseInt(txtParution.getText());
-            int colonne1 = Integer.parseInt(txtColonne.getText());
-            int rng1 = Integer.parseInt(txtRng.getText());
+    public ObservableList<Livre> addLivre() {
+        String titre1 = txtTitre.getText();
+        String auteur1 = txtAuteur.getText();
+        String pres1 = txtPres.getText();
+        int parution1 = Integer.parseInt(txtParution.getText());
+        int colonne1 = Integer.parseInt(txtColonne.getText());
+        int rng1 = Integer.parseInt(txtRng.getText());
 
-            bibliotheque.add(new Livre(titre1,auteur1,pres1,parution1,colonne1,rng1));
-            return bibliotheque;
+        bibliotheque.add(new Livre(titre1, auteur1, pres1, parution1, colonne1, rng1));
+        return bibliotheque;
 
     }
 
@@ -225,34 +236,13 @@ public class HelloController implements Initializable {
         this.context = JAXBContext.newInstance(new Class[]{Livre.class});
     }
 
-    /* handleModif test ou l'on supprime le film selectionné en ajoutant le film modifié
-    @FXML
-    void handleModif(ActionEvent event) {
-        Livre selectedLivre = (Livre)this.tabBiblio.getSelectionModel().getSelectedItem();
-        int selectedIndex = this.tabBiblio.getSelectionModel().getSelectedIndex();
-        if (selectedLivre != null) {
-            this.tabBiblio.getItems().remove(selectedIndex);
-            bibliotheque.remove(selectedIndex);
-            this.txtTitre.setText(selectedLivre.getTitre());
-            this.txtAuteur.setText(selectedLivre.getAuteur());
-            this.txtPres.setText(selectedLivre.getPresentation());
-            int parution = selectedLivre.getParution();
-            this.txtParution.setText(String.valueOf(parution));
-            int colonne = selectedLivre.getColonne();
-            this.txtColonne.setText(String.valueOf(colonne));
-            int rangee = selectedLivre.getRng();
-            this.txtRng.setText(String.valueOf(rangee));
-        }
-
-    }*/
-
     @FXML
     public ObservableList<Livre> modifierLivre() {
-        Livre selectedLivre = (Livre)this.tabBiblio.getSelectionModel().getSelectedItem();
+        Livre selectedLivre = (Livre) this.tabBiblio.getSelectionModel().getSelectedItem();
         int selectedIndex = this.tabBiblio.getSelectionModel().getSelectedIndex();
         if (selectedLivre != null) {
-            for (int i=0; i< bibliotheque.size(); i++){
-                if ( selectedLivre.getTitre().equals(bibliotheque.get(i).getTitre()) && selectedLivre.getRng() == bibliotheque.get(i).getRng()){
+            for (int i = 0; i < bibliotheque.size(); i++) {
+                if (selectedLivre.getTitre().equals(bibliotheque.get(i).getTitre()) && selectedLivre.getRng() == bibliotheque.get(i).getRng()) {
 
                     System.out.println("Titre du livre selectionné:" + selectedLivre.getTitre());
                     System.out.println("Titre du livre de la biblio:" + bibliotheque.get(i).getTitre());
@@ -269,21 +259,9 @@ public class HelloController implements Initializable {
             }
 
 
-
         }
         return bibliotheque;
 
-    }
-
-    @FXML
-    void SaveXML(ActionEvent event) throws JAXBException {
-        this.initJAXB();
-        Marshaller marshaller = this.context.createMarshaller();
-        marshaller.marshal(new Livre((String)null, (String)null, (String)null, Integer.parseInt((String)null), 0, 0), new File("livres.xml"));
-    }
-
-    @FXML
-    void SauvegarderSous(ActionEvent event) {
     }
 
     private void showLivreDetails(Livre livre) {
@@ -305,30 +283,105 @@ public class HelloController implements Initializable {
 
     }
 
-}
+    /*
+    private void uploadFile(File outputFile) {
+        try {
+            XmlSerializer xmlSerializer = new XmlSerializer();
 
+            //Bibliotheque.Livre bibliotheque2 = new Bibliotheque();
+            //bibliotheque2.getLivre().addAll(bibliotheque);
 
+            String result = xmlSerializer.serialize(bibliotheque2);
 
- /*
+            FileWriter fileWriter = new FileWriter(outputFile);
+            fileWriter.write(result);
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println("Erreur, Une erreur est survenue lors du téléchargement du fichier");
+            return;
+        }
+    }*/
+
+    @FXML
+    void SaveXML() {
+        if (myfile != null) {
+            System.out.println("Le fichier existe deja");
+            return;
+        }
+
+        //SauvegarderSous();
+    }
+
+    @FXML
+    void SauvegarderSous() throws JAXBException {
+
+        var context = JAXBContext.newInstance(Bibliotheque.class);
+        var m = context.createMarshaller();
+        try {
+            // create JAXB context and instantiate marshaller
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+
+            // Write to System.out
+            m.marshal(bibliotheque, System.out);
+
+            // Write to File
+            m.marshal(bibliotheque, new File(FICHIER_XML));
+
+        } catch (PropertyException e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     void Explorer(ActionEvent event) throws IOException, JAXBException {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("xml files (*.xml)", new String[]{"xml"});
         chooser.setDialogTitle("Open schedule file");
         chooser.setFileFilter(xmlfilter);
-        int value = chooser.showOpenDialog((Component)null);
+        int value = chooser.showOpenDialog((Component) null);
         if (value == 0) {
             File target = chooser.getSelectedFile();
 
             try {
-                this.jaxbContext = JAXBContext.newInstance(new Class[]{Livre.class});
-                Unmarshaller jaxbUnmarshaller = this.jaxbContext.createUnmarshaller();
-                Livre livre = (Livre)jaxbUnmarshaller.unmarshal(target);
-                System.out.println(livre);
-            } catch (JAXBException var8) {
-                var8.printStackTrace();
+                JAXBContext jc = JAXBContext.newInstance("com.filrouge.projet_filrouge.model");
+                Unmarshaller unmarshaller = jc.createUnmarshaller();
+                Bibliotheque bibliotheque2 = (Bibliotheque) unmarshaller.unmarshal(target);
+                List livres = (List) bibliotheque2.getLivre();
+                bibliotheque.clear();
+                tabBiblio.getItems().clear();
+                for (int i = 0; i < livres.size(); i++) {
+                    if (livres.get(i) instanceof Bibliotheque.Livre) {
+                        System.out.println("C'est vrai");
+                    } else {
+                        System.out.println("C'est faux");
+                        System.out.println(livres.get(i).getClass().toString());
+                    }
+                    Bibliotheque.Livre livre = (Bibliotheque.Livre) livres.get(i);
+                    System.out.println("Livre ");
+                    System.out.println("Titre   : " + livre.getTitre());
+                    //System.out.println("Auteur  : " + livre.getAuteur());
+                    System.out.println("Parution : " + livre.getParution());
+                    System.out.println("Présentation : " + livre.getPresentation());
+                    System.out.println("Colonne : " + livre.getColonne());
+                    System.out.println("Rangée : " + livre.getRangee());
+                    System.out.println();
+
+                    //Livre myLivre =new Livre(livre.getTitre(), livre.getAuteur().getNom() + "_/_"+ livre.getAuteur().getPrenom(), livre.getPresentation() , livre.getParution(), livre.getColonne(), livre.getRangee());
+                    Livre myLivre = new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation(), livre.getParution(), livre.getColonne(), livre.getRangee());
+
+                    //TEST
+                    bibliotheque.add(new Livre(livre.getTitre(), livre.getAuteur().getNom(), livre.getAuteur().getPrenom(), livre.getPresentation(), livre.getParution(), livre.getColonne(), livre.getRangee()));
+
+
+                    tabBiblio.getItems().add(myLivre);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
-    }*/
+
+    }
+}
 

@@ -5,6 +5,7 @@ module com.filrouge.projet_filrouge {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires java.xml.bind;
+    requires java.desktop;
 
     opens com.filrouge.projet_filrouge to javafx.fxml;
     exports com.filrouge.projet_filrouge;

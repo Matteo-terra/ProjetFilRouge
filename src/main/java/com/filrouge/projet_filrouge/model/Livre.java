@@ -11,7 +11,7 @@ public class Livre {
         String prenom;
         String presentation;
 
-        public Livre(String titre, String auteur, String presentation , int parution , int colonne , int rng) {
+        public Livre(String titre, String auteur, String presentation, int parution, int colonne, int rng) {
                 this.colonne = colonne;
                 this.rng = rng;
                 this.titre = titre;
@@ -20,7 +20,7 @@ public class Livre {
                 this.presentation = presentation;
         }
 
-        public Livre(String titre, String nom, String prenom,String presentation , int parution , int colonne , int rng) {
+        public Livre(String titre, String nom, String prenom, String presentation, int parution, int colonne, int rng) {
                 this.colonne = colonne;
                 this.rng = rng;
                 this.titre = titre;
