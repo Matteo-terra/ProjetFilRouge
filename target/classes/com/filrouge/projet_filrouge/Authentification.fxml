@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="315.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.filrouge.projet_filrouge.controller.Login">
+    <children>
+        <TextField fx:id="txtUsername" layoutX="172.0" layoutY="113.0" />
+        <PasswordField fx:id="txtPassword" layoutX="172.0" layoutY="171.0" />
+        <Label layoutX="172.0" layoutY="90.0" text="Nom d'utilisateur" />
+        <Label layoutX="172.0" layoutY="149.0" text="Mot de Passe" />
+        <Button fx:id="btnConnexion" layoutX="208.0" layoutY="211.0" mnemonicParsing="false" onAction="#validConnexion" text="Connexion" />
+      <Label layoutX="153.0" layoutY="43.0" prefHeight="17.0" prefWidth="182.0" text="Bienvenue dans la bibilothèque la" />
+    </children>
+</AnchorPane>

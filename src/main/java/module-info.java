@@ -6,6 +6,7 @@ module com.filrouge.projet_filrouge {
     requires com.dlsc.formsfx;
     requires java.xml.bind;
     requires java.desktop;
+    requires java.sql;
 
     opens com.filrouge.projet_filrouge to javafx.fxml;
     exports com.filrouge.projet_filrouge;
